@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardActions, Button, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
+import './AdminView.css'
 
 function AdminView() {
   const [users, setUsers] = useState(generateUsers(100));
@@ -55,6 +56,7 @@ function AdminView() {
 
   return (
     <div className="admin-view">
+      <h3>User Requests</h3>
       <div className="card-list">
         {users.map((user) => (
           <Card key={user.id} variant="outlined" className="user-card">
