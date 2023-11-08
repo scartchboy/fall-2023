@@ -6,6 +6,8 @@ import AdminView from './admin/AdminView';
 import './App.css'
 import Profile from './common/Profile/Profile';
 import SearchPage from './common/SearchPage/SearchPage';
+import ForgotPassword from './auth/forgorPassword/ForgotPassword';
+import TwoAuth from './auth/TwoAuth/TwoAuth';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path="/admin-view" element={<AdminView />} />
           <Route path="/profile-page" element={<Profile />} />
           <Route path="/search-page" element={<SearchPage />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/two-auth" element={<TwoAuth />} />
         </Routes>
       </BrowserRouter>
     </div>
