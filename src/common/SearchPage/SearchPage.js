@@ -24,12 +24,6 @@ const useStyles = makeStyles((theme) => ({
     searchButton: {
       padding: '10px',
     },
-    rootTop: {
-      display: 'flex',
-      justifyContent: 'center',
-      marginTop: '20px',
-      height: '100vh',
-    },
   }));
   
   function SearchPage() {

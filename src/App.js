@@ -8,6 +8,7 @@ import Profile from './common/Profile/Profile';
 import SearchPage from './common/SearchPage/SearchPage';
 import ForgotPassword from './auth/forgorPassword/ForgotPassword';
 import TwoAuth from './auth/TwoAuth/TwoAuth';
+import CheckEmail from './auth/CheckEmail';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/search-page" element={<SearchPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/two-auth" element={<TwoAuth />} />
+          <Route path="/check-email" element={<CheckEmail />} />
         </Routes>
       </BrowserRouter>
     </div>

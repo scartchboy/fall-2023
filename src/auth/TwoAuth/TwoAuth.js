@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Container,
     Paper,
@@ -12,9 +12,17 @@ import {
 import { Check } from '@material-ui/icons';
 import './TwoAuth.css'
 
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/userSlice';
+
 function TwoAuth() {
 
     const [otp, setOtp] = useState(['', '', '', '']);
+
+    const user = useSelector(selectUser);
+
+    useEffect(() => {
+    }, [])
 
     const handleOtpChange = (index, value) => {
         if (!isNaN(value) && value.length <= 1) {
@@ -51,6 +59,7 @@ function TwoAuth() {
 
     return (
         <Container maxWidth="sm">
+            <h3>Welcome {user && user.firstname} {user && user.lastname}</h3>
             <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
                 <Typography variant="h4">Enter One Time Password</Typography>
                 <Divider style={{ margin: '20px 0' }} />
