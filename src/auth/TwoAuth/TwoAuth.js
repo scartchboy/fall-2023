@@ -76,7 +76,7 @@ function TwoAuth() {
         }).then(res => {
             if(res.status == 200){
                 dispatch(clearQr())
-                navigate('/admin-auth')
+                navigate('/admin-view')
             }else{
                 toast.error("Error occured while two factor Auth", {
                     position:toast.POSITION.BOTTOM_LEFT
