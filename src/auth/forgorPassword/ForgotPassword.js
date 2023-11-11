@@ -12,6 +12,8 @@ import {
 import { SendOutlined } from '@material-ui/icons';
 import './ForgotPassword.css'
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function ForgotPassword() {
 
@@ -19,6 +21,27 @@ function ForgotPassword() {
 
     const handleSubmit = () => {
         console.log(email);
+        axios({
+            url: 'http://localhost:5000/v1/auth/user/resetPassword',
+            method: 'POST',
+            data: {
+                email : email
+            }
+        }).then(res => {
+            if(res.status == 200){
+                toast.warn("Please check the mail for reset link", {
+                    position:toast.POSITION.BOTTOM_LEFT
+                })
+            }
+            toast.error("Error occured!! Please try again", {
+                position:toast.POSITION.BOTTOM_LEFT
+            })
+        }).catch(e => {
+            toast.error("Error occured!! Please try again", {
+                position:toast.POSITION.BOTTOM_LEFT
+            })
+            console.log(e);
+        })
         setEmail("");
     }
 
@@ -39,7 +62,7 @@ function ForgotPassword() {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => handleSubmit()}
+                    onClick={handleSubmit}
                     startIcon={<SendOutlined />}
                 >
                     Send Mail
