@@ -1,15 +1,18 @@
 /* AdminView.css */
 
 .admin-view {
-    display: flex;
-    flex-direction: column;
-    height: 90vh;
-    justify-content: center;
-    align-items: center;
     padding: 20px;
     margin: 2% 0;
+    background-color: #000000A0 !important;
+    color: white !important;
   }
   
+  .cell-styling{
+    color: white !important;
+    text-align: center !important;
+    align-items: center;
+  }
+
   .card-list {
     height: 80vh;
     display: flex;

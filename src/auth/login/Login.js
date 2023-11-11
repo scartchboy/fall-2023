@@ -84,6 +84,11 @@ function Login() {
       .then((response) => {
         if (response.status == 200) {
           console.log(response);
+          if(!response.data.user.isVerfied){
+            toast.error("Admin hasn't verified your account yet", {
+              position : toast.POSITION.BOTTOM_LEFT
+            })
+          }
           dispatch(setUser(response.data.user))
           dispatch(setQr({
             QrCode : response.data.QrCode,
