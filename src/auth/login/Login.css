@@ -1,17 +1,16 @@
 /* Login.css */
 
-body {
+.login-container {
     margin: 0;
     padding: 0;
-    background-color: #007bff; /* Change the page background color to blue */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 90vh;
   }
   
   .login-form {
-    background-color: #ffffff;
+    background-color: #00000090;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 40px; /* Increase the padding to create more space inside the card */

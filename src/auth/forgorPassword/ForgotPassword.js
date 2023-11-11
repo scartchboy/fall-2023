@@ -23,7 +23,7 @@ function ForgotPassword() {
 
     return (
         <Container maxWidth="sm">
-            <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
+            <Paper elevation={3} className='paper-div'>
                 <Typography variant="h4">Forgot Password</Typography>
                 <Divider style={{ margin: '20px 0' }} />
 

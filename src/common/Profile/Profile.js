@@ -32,7 +32,7 @@ function Profile() {
     });
 
     const toggleEditMode = () => {
-        if(!editMode && showChangePassword){
+        if (!editMode && showChangePassword) {
             setShowChangePassword(false);
         }
         setEditMode(!editMode);
@@ -45,7 +45,7 @@ function Profile() {
     };
 
     const handleChangePassword = () => {
-        if(editMode){
+        if (editMode) {
             toggleEditMode();
         }
         setShowChangePassword(true);
@@ -61,14 +61,15 @@ function Profile() {
     };
 
     return (
-        <Container maxWidth="sm">
-            <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
-                <Typography variant="h4">My Profile</Typography>
+        <Container maxWidth="sm" >
+            <Paper elevation={3} className='container-div' style={{ padding: '20px', marginTop: '20px' }}>
+                <h2>My Profile</h2>
                 <Divider style={{ margin: '20px 0' }} />
 
                 <TextField
                     label="First Name"
                     fullWidth
+                    className='inputClass'
                     margin="normal"
                     value={firstName}
                     InputProps={{
@@ -79,6 +80,7 @@ function Profile() {
 
                 <TextField
                     label="Last Name"
+                    className='inputClass'
                     fullWidth
                     margin="normal"
                     value={lastName}
@@ -91,6 +93,7 @@ function Profile() {
 
                 <TextField
                     label="Email"
+                    className='inputClass'
                     fullWidth
                     margin="normal"
                     value={PROFILEDATA.email}
@@ -102,7 +105,7 @@ function Profile() {
 
                 {!editMode ? (
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         color="primary"
                         onClick={toggleEditMode}
                         startIcon={<Edit />}
@@ -113,7 +116,7 @@ function Profile() {
                     <div className='passwordActionBtsGrp'>
                         <Button
                             variant="outlined"
-                            color="default"
+                            color="secondary"
                             onClick={toggleEditMode}
                             startIcon={<Cancel />}
                         >
@@ -130,23 +133,27 @@ function Profile() {
                     </div>
                 )}
 
-                <Grid container spacing={2} style={{ marginTop: '20px' }}>
-                    <Grid item>
-                        <Button
-                            variant="outlined"
-                            color="primary"
-                            startIcon={<Lock />}
-                            onClick={handleChangePassword}
-                        >
-                            Update Password
-                        </Button>
+                {
+                    !showChangePassword &&
+                    <Grid container spacing={2} style={{ marginTop: '20px' }}>
+                        <Grid item>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                startIcon={<Lock />}
+                                onClick={handleChangePassword}
+                            >
+                                Update Password
+                            </Button>
+                        </Grid>
                     </Grid>
-                </Grid>
+                }
 
                 {showChangePassword && (
                     <div style={{ marginTop: '20px' }}>
                         <TextField
                             label="Current Password"
+                            className='inputClass'
                             type="password"
                             fullWidth
                             margin="normal"
@@ -158,6 +165,7 @@ function Profile() {
 
                         <TextField
                             label="New Password"
+                            className='inputClass'
                             type="password"
                             fullWidth
                             margin="normal"
@@ -169,6 +177,7 @@ function Profile() {
 
                         <TextField
                             label="Confirm Password"
+                            className='inputClass'
                             type="password"
                             fullWidth
                             margin="normal"
@@ -180,7 +189,7 @@ function Profile() {
                         <div className="passwordActionBtsGrp">
                             <Button
                                 variant="outlined"
-                                color="default"
+                                color="secondary"
                                 onClick={handleCancelPasswordChange}
                                 startIcon={<Cancel />}
                             >

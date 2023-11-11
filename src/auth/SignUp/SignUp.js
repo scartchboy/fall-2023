@@ -215,8 +215,9 @@ function SignUp() {
         <button className="signup-button" onClick={handleSignUp}>
           Sign Up
         </button>
+        <pre>Already have an account?</pre>
         <Link to="/">
-          <button className="login-button">Login</button>
+          <a>Login</a>
         </Link>
       </div>
     </div>

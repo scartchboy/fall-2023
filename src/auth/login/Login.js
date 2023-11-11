@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Login.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -6,7 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../redux/userSlice';
+import { setUser, selectUser } from '../../redux/userSlice';
+import { useSelector } from 'react-redux';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -17,6 +18,8 @@ function Login() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const user = useSelector(selectUser);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -29,6 +32,14 @@ function Login() {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
+  useEffect(() => {
+    if (user != null && user.isAdmin) {
+      navigate('/admin-view')
+    }else if(user != null){
+      navigate('/search-page')
+    }
+  }, [])
 
   const handleLogin = () => {
     setEmailError('');
@@ -119,11 +130,12 @@ function Login() {
           </span>
         </div>
         {passwordError && <p className="error-message">{passwordError}</p>}
-        <button className="login-button" onClick={handleLogin}>
+        <button className="signup-button" onClick={handleLogin}>
           Login
         </button>
+        <pre>Don't have an account ? </pre>
         <Link to="/signup">
-          <button className="signup-button">Sign Up</button>
+          <a>Sign Up</a>
         </Link>
       </div>
     </div>

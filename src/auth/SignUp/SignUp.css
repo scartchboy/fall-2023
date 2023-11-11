@@ -1,9 +1,8 @@
 /* SignUp.css */
 
-body {
+.signup-container {
     margin: 0;
     padding: 0;
-    background-color: #007bff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,7 +10,7 @@ body {
   }
   
   .signup-form {
-    background-color: #ffffff;
+    background-color: #00000090;
     border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 40px;
@@ -68,7 +67,7 @@ body {
   }
   
   .signup-button {
-    background-color: #17a2b8; /* Adjust the button background color (teal in this example) */
+    background-color: #234E7D; /* Adjust the button background color (teal in this example) */
     color: #fff;
     border: none;
     border-radius: 15px;
@@ -79,7 +78,7 @@ body {
   }
   
   .signup-button:hover {
-    background-color: #138496;
+    background-color: #232F7D;
   }
   
   /* Additional CSS for Sign Up fields (similar to Login fields) */

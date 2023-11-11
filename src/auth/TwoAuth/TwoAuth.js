@@ -59,9 +59,9 @@ function TwoAuth() {
 
     return (
         <Container maxWidth="sm">
-            <h3>Welcome {user && user.firstname} {user && user.lastname}</h3>
-            <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
-                <Typography variant="h4">Enter One Time Password</Typography>
+            <h2>Welcome {user && user.firstname} {user && user.lastname}</h2>
+            <Paper elevation={3} style={{ backgroundColor:"#00000090", padding: '20px', marginTop: '20px' }}>
+                <h2>Enter One Time Password</h2>
                 <Divider style={{ margin: '20px 0' }} />
 
                 <div style={{ padding: "20px" }}>
@@ -80,7 +80,7 @@ function TwoAuth() {
                     ))}
                 </div>
                 <Button
-                    variant="outlined"
+                    variant="contained"
                     color="primary"
                     onClick={() => handleSubmit()}
                     startIcon={<Check />}

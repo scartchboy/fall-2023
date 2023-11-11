@@ -11,7 +11,7 @@ import { selectUser } from '../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 function AdminView() {
-  const [users, setUsers] = useState(generateUsers(10));
+  const [users, setUsers] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
@@ -35,47 +35,83 @@ function AdminView() {
 
   useEffect(() => {
 
-    if (!user || !user.isAdmin) {
+    if (user == null) {
+      navigate('/')
+    } else if (!user.isAdmin) {
       navigate('/search-page')
     }
-    console.log(user.accessToken);
+
     axios({
       url: 'http://localhost:5000/v1/admin/getVerificationUsers',
       method: 'GET',
       headers: {
-        authorization: `Bearer ${user.accessToken}`,
+        authorization: `Bearer ${user && user.accessToken}`,
       }
     }).then(res => {
-      console.log(res);
+      const fetchedUsers = []
+      for (let i = 1; i <= res.data.users.length - 1; i++) {
+        fetchedUsers.push({
+          id: res.data.users[i].id,
+          firstname: res.data.users[i].firstname,
+          lastname: res.data.users[i].lastname,
+
+          email: res.data.users[i].email,
+
+          approved: false,
+          declined: false,
+        })
+      }
+      setUsers(fetchedUsers)
     }).catch(e => {
       console.log(e);
     })
   }, [])
 
   const handleApprove = (userId) => {
-    const updatedUsers = users.map((user) => {
-      if (user.id === userId) {
-        user.approved = true;
-        user.declined = false;
-      }
-      return user;
-    });
-    setUsers(updatedUsers);
-    setSnackbarMessage(`User ${userId} has been approved.`);
-    setOpenSnackbar(true);
+
+    axios({
+      url: `http://localhost:5000/v1/admin/approveUser/${userId}`,
+      method: 'PUT',
+    })
+      .then((res) => {
+        const updatedUsers = users.map((user) => {
+          if (user.id === userId) {
+            user.approved = true;
+            user.declined = false;
+          }
+          return user;
+        });
+        setUsers(updatedUsers);
+        setSnackbarMessage(`User ${user.firstname} has been approved.`);
+        setOpenSnackbar(true);
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+
   };
 
   const handleDecline = (userId) => {
-    const updatedUsers = users.map((user) => {
-      if (user.id === userId) {
-        user.approved = false;
-        user.declined = true;
-      }
-      return user;
-    });
-    setUsers(updatedUsers);
-    setSnackbarMessage(`User ${userId} has been declined.`);
-    setOpenSnackbar(true);
+
+    axios({
+      url: `http://localhost:5000/v1/admin/declineUser/${userId}`,
+      method: 'PUT',
+    })
+      .then((res) => {
+        const updatedUsers = users.map((user) => {
+          if (user.id === userId) {
+            user.approved = false;
+            user.declined = true;
+          }
+          return user;
+        });
+        setUsers(updatedUsers);
+        setSnackbarMessage(`User ${user.firstname} has been declined.`);
+        setOpenSnackbar(true);
+      })
+      .catch((e) => {
+        console.log(e)
+      })
   };
 
   const handleCloseSnackbar = () => {
@@ -84,11 +120,10 @@ function AdminView() {
 
   return (
     <div className="admin-view">
-      <h3>User Requests</h3>
       <div className="card-list">
         {users.map((user) => (
           <Card key={user.id} variant="outlined" className="user-card">
-            <CardContent>
+            <CardContent className="user-card-content">
               <h3>{user.userName}</h3>
               <p>Email: {user.email}</p>
             </CardContent>
