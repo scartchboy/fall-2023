@@ -57,30 +57,10 @@ function AdminView() {
     }).catch(e => {
       console.log(e);
     })
-      .then((res) => {
-        const fetchedUsers = []
-        for (let i = 1; i <= res.data.users.length - 1; i++) {
-          fetchedUsers.push({
-            id: res.data.users[i].id,
-            firstname: res.data.users[i].firstname,
-            lastname: res.data.users[i].lastname,
-
-            email: res.data.users[i].email,
-
-            approved: false,
-            declined: false,
-          })
-        }
-
-        setUsers(fetchedUsers)  
-      })
-      .catch((e) => {
-        console.log(e)
-      })
   }, [])
 
   const handleApprove = (userId) => {
-    const currentUser = null;
+    let currentUser = null;
     axios({
       url: `http://localhost:5000/v1/admin/approveUser/${userId}`,
       method: 'PUT',
@@ -105,7 +85,7 @@ function AdminView() {
   };
 
   const handleDecline = (userId) => {
-    const currentUser = null;
+    let currentUser = null;
     axios({
       url: `http://localhost:5000/v1/admin/declineUser/${userId}`,
       method: 'PUT',
