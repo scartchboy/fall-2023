@@ -1,13 +1,23 @@
 // AdminView.js
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardActions, Button, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
+import './AdminView.css'
+import axios from 'axios';
+
+import { useSelector } from 'react-redux';
+import { selectUser } from '../redux/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 function AdminView() {
-  const [users, setUsers] = useState(generateUsers(100));
+  const [users, setUsers] = useState(generateUsers(10));
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  const user = useSelector(selectUser);
+
+  const navigate = useNavigate();
 
   function generateUsers(count) {
     const users = [];
@@ -22,6 +32,25 @@ function AdminView() {
     }
     return users;
   }
+
+  useEffect(() => {
+
+    if (!user || !user.isAdmin) {
+      navigate('/search-page')
+    }
+    console.log(user.accessToken);
+    axios({
+      url: 'http://localhost:5000/v1/admin/getVerificationUsers',
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      }
+    }).then(res => {
+      console.log(res);
+    }).catch(e => {
+      console.log(e);
+    })
+  }, [])
 
   const handleApprove = (userId) => {
     const updatedUsers = users.map((user) => {
@@ -55,6 +84,7 @@ function AdminView() {
 
   return (
     <div className="admin-view">
+      <h3>User Requests</h3>
       <div className="card-list">
         {users.map((user) => (
           <Card key={user.id} variant="outlined" className="user-card">

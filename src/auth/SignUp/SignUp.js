@@ -3,8 +3,10 @@
 import React, { useState } from 'react';
 import './SignUp.css'; // Create a new CSS file for styling
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { faEye, faEyeSlash, faL } from '@fortawesome/free-solid-svg-icons';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { Backdrop, CircularProgress } from '@material-ui/core';
 
 function SignUp() {
   const [firstName, setFirstName] = useState('');
@@ -19,6 +21,10 @@ function SignUp() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [rePasswordError, setRePasswordError] = useState('');
+
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
@@ -49,6 +55,7 @@ function SignUp() {
   };
 
   const handleSignUp = () => {
+    setLoading(true);
     setFirstNameError('');
     setLastNameError('');
     setEmailError('');
@@ -96,6 +103,32 @@ function SignUp() {
     }
 
     // Implement your sign-up logic here
+    const data = {
+      firstname: firstName,
+      lastname: lastName,
+      email: email,
+      password: password
+    }
+
+    axios({
+      url: 'http://localhost:5000/v1/auth/user/register',
+      method: 'POST',
+      data: data,
+      headers: {
+        // 'Authorization': `bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((response) => {
+        navigate('/check-email')
+        console.log("Successfully registered");
+        setLoading(false)
+      }).catch(e => {
+        console.log(e)
+        setLoading(false)
+      })
+
+
     console.log('First Name:', firstName);
     console.log('Last Name:', lastName);
     console.log('Email:', email);
@@ -110,6 +143,14 @@ function SignUp() {
 
   return (
     <div className="signup-container">
+      {
+        loading && <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      }
       <div className="signup-form">
         <h2>Sign Up</h2>
         <div className="input-group">

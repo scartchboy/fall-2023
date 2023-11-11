@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import './Login.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios'
+
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/userSlice';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -10,6 +14,9 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -48,6 +55,32 @@ function Login() {
     }
 
     // Implement your login logic here
+    const data = {
+      email: email,
+      password: password
+    }
+
+    axios({
+      url: 'http://localhost:5000/v1/auth/user/login',
+      method: 'POST',
+      data: data,
+      headers: {
+        // 'Authorization': `bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((response) => {
+        if (response.status == 200) {
+          console.log(response);
+          dispatch(setUser(response.data.user))
+          navigate('/admin-view')
+          console.log("Successfully Login");
+
+        }else{
+          console.log("Error occured while loggin in", response.data.message);
+        }
+      }).catch(e => console.log(e))
+
     console.log('Email:', email);
     console.log('Password:', password);
   };
