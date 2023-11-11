@@ -1,37 +1,29 @@
 // AdminView.js
 
-import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardActions, Button, Snackbar } from '@material-ui/core';
-import MuiAlert from '@material-ui/lab/Alert';
+import React, { useEffect, useState } from 'react'
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Button,
+  Snackbar,
+} from '@material-ui/core'
+import MuiAlert from '@material-ui/lab/Alert'
 import './AdminView.css'
-import axios from 'axios';
+import axios from 'axios'
 
-import { useSelector } from 'react-redux';
-import { selectUser } from '../redux/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux'
+import { selectUser } from '../redux/userSlice'
+import { useNavigate } from 'react-router-dom'
 
 function AdminView() {
-  const [users, setUsers] = useState([]);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [users, setUsers] = useState([])
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
 
-  const user = useSelector(selectUser);
+  const user = useSelector(selectUser)
 
-  const navigate = useNavigate();
-
-  function generateUsers(count) {
-    const users = [];
-    for (let i = 1; i <= count; i++) {
-      users.push({
-        id: i,
-        userName: `User ${i}`,
-        email: `user${i}@example.com`,
-        approved: false,
-        declined: false,
-      });
-    }
-    return users;
-  }
+  const navigate = useNavigate()
 
   useEffect(() => {
 
@@ -65,10 +57,30 @@ function AdminView() {
     }).catch(e => {
       console.log(e);
     })
+      .then((res) => {
+        const fetchedUsers = []
+        for (let i = 1; i <= res.data.users.length - 1; i++) {
+          fetchedUsers.push({
+            id: res.data.users[i].id,
+            firstname: res.data.users[i].firstname,
+            lastname: res.data.users[i].lastname,
+
+            email: res.data.users[i].email,
+
+            approved: false,
+            declined: false,
+          })
+        }
+
+        setUsers(fetchedUsers)  
+      })
+      .catch((e) => {
+        console.log(e)
+      })
   }, [])
 
   const handleApprove = (userId) => {
-
+    const currentUser = null;
     axios({
       url: `http://localhost:5000/v1/admin/approveUser/${userId}`,
       method: 'PUT',
@@ -76,13 +88,14 @@ function AdminView() {
       .then((res) => {
         const updatedUsers = users.map((user) => {
           if (user.id === userId) {
+            currentUser = user
             user.approved = true;
             user.declined = false;
           }
           return user;
         });
         setUsers(updatedUsers);
-        setSnackbarMessage(`User ${user.firstname} has been approved.`);
+        setSnackbarMessage(`User ${currentUser.firstname} has been approved.`);
         setOpenSnackbar(true);
       })
       .catch((e) => {
@@ -92,7 +105,7 @@ function AdminView() {
   };
 
   const handleDecline = (userId) => {
-
+    const currentUser = null;
     axios({
       url: `http://localhost:5000/v1/admin/declineUser/${userId}`,
       method: 'PUT',
@@ -100,13 +113,14 @@ function AdminView() {
       .then((res) => {
         const updatedUsers = users.map((user) => {
           if (user.id === userId) {
+            currentUser = user
             user.approved = false;
             user.declined = true;
           }
           return user;
         });
         setUsers(updatedUsers);
-        setSnackbarMessage(`User ${user.firstname} has been declined.`);
+        setSnackbarMessage(`User ${currentUser.firstname} has been declined.`);
         setOpenSnackbar(true);
       })
       .catch((e) => {
@@ -115,16 +129,17 @@ function AdminView() {
   };
 
   const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
-  };
+    setOpenSnackbar(false)
+  }
 
   return (
     <div className="admin-view">
       <div className="card-list">
         {users.map((user) => (
           <Card key={user.id} variant="outlined" className="user-card">
-            <CardContent className="user-card-content">
-              <h3>{user.userName}</h3>
+            <CardContent>
+              <h3>{user.firstname}</h3>
+              <h3>{user.lastname}</h3>
               <p>Email: {user.email}</p>
             </CardContent>
             <CardActions className="actions">
@@ -158,13 +173,22 @@ function AdminView() {
           </Card>
         ))}
       </div>
-      <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
-        <MuiAlert elevation={6} variant="filled" onClose={handleCloseSnackbar} severity="success">
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleCloseSnackbar}
+          severity="success"
+        >
           {snackbarMessage}
         </MuiAlert>
       </Snackbar>
     </div>
-  );
+  )
 }
 
-export default AdminView;
+export default AdminView
