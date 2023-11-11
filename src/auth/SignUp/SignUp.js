@@ -7,6 +7,7 @@ import { faEye, faEyeSlash, faL } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { Backdrop, CircularProgress } from '@material-ui/core';
+import { toast } from 'react-toastify';
 
 function SignUp() {
   const [firstName, setFirstName] = useState('');
@@ -123,9 +124,15 @@ function SignUp() {
         navigate('/check-email')
         console.log("Successfully registered");
         setLoading(false)
+        toast.success("Successfully registered, Please check email to verify", {
+          position: toast.POSITION.BOTTOM_LEFT
+        })
       }).catch(e => {
         console.log(e)
         setLoading(false)
+        toast.error("Error occured while signing up", {
+          position: toast.POSITION.BOTTOM_LEFT
+        })
       })
 
 

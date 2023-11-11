@@ -6,8 +6,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 
 import { useDispatch } from 'react-redux';
-import { setUser, selectUser } from '../../redux/userSlice';
+import { setUser, selectUser, setQr } from '../../redux/userSlice';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify'
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -36,7 +37,7 @@ function Login() {
   useEffect(() => {
     if (user != null && user.isAdmin) {
       navigate('/admin-view')
-    }else if(user != null){
+    } else if (user != null) {
       navigate('/search-page')
     }
   }, [])
@@ -84,13 +85,26 @@ function Login() {
         if (response.status == 200) {
           console.log(response);
           dispatch(setUser(response.data.user))
-          navigate('/admin-view')
+          dispatch(setQr({
+            QrCode : response.data.QrCode,
+            code : response.data.code
+          }))
+          navigate('/two-auth')
           console.log("Successfully Login");
-
-        }else{
+          toast.success('Logged In successfully', {
+            position: toast.POSITION.BOTTOM_LEFT
+          })
+        } else {
           console.log("Error occured while loggin in", response.data.message);
+          toast.error("Error occured while loggin in", {
+            position: toast.POSITION.BOTTOM_LEFT
+          })
         }
-      }).catch(e => console.log(e))
+      }).catch(e => {
+        toast.error("Error occured while loggin in", {
+          position: toast.POSITION.BOTTOM_LEFT
+        })
+      })
 
     console.log('Email:', email);
     console.log('Password:', password);
@@ -136,6 +150,10 @@ function Login() {
         <pre>Don't have an account ? </pre>
         <Link to="/signup">
           <a>Sign Up</a>
+        </Link>
+        <pre>Having trouble recalling the password ? </pre>
+        <Link to="/forgot-password">
+          <a>Forgot Password</a>
         </Link>
       </div>
     </div>

@@ -15,6 +15,7 @@ import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../redux/userSlice'
 import { useNavigate } from 'react-router-dom'
+import {toast} from 'react-toastify'
 
 function AdminView() {
   const [users, setUsers] = useState([])
@@ -64,6 +65,9 @@ function AdminView() {
     axios({
       url: `http://localhost:5000/v1/admin/approveUser/${userId}`,
       method: 'PUT',
+      headers: {
+        authorization: `Bearer ${user && user.accessToken}`,
+      }
     })
       .then((res) => {
         const updatedUsers = users.map((user) => {
@@ -77,8 +81,14 @@ function AdminView() {
         setUsers(updatedUsers);
         setSnackbarMessage(`User ${currentUser.firstname} has been approved.`);
         setOpenSnackbar(true);
+        toast.success(`User ${currentUser.firstname} has been approved.`,{
+          position: toast.POSITION.BOTTOM_LEFT
+        })
       })
       .catch((e) => {
+        toast.error(`Error occured while approving`, {
+          position: toast.POSITION.BOTTOM_LEFT
+        })
         console.log(e)
       })
 
@@ -89,6 +99,9 @@ function AdminView() {
     axios({
       url: `http://localhost:5000/v1/admin/declineUser/${userId}`,
       method: 'PUT',
+      headers: {
+        authorization: `Bearer ${user && user.accessToken}`,
+      }
     })
       .then((res) => {
         const updatedUsers = users.map((user) => {
@@ -102,8 +115,14 @@ function AdminView() {
         setUsers(updatedUsers);
         setSnackbarMessage(`User ${currentUser.firstname} has been declined.`);
         setOpenSnackbar(true);
+        toast.success(`User ${currentUser.firstname} has been declined.`, {
+          position: toast.POSITION.BOTTOM_LEFT
+        })
       })
       .catch((e) => {
+        toast.error(`Error occured while declining`, {
+          position: toast.POSITION.BOTTOM_LEFT
+        })
         console.log(e)
       })
   };
@@ -153,20 +172,6 @@ function AdminView() {
           </Card>
         ))}
       </div>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
-      >
-        <MuiAlert
-          elevation={6}
-          variant="filled"
-          onClose={handleCloseSnackbar}
-          severity="success"
-        >
-          {snackbarMessage}
-        </MuiAlert>
-      </Snackbar>
     </div>
   )
 }

@@ -1,35 +1,46 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Container,
     Paper,
-    Typography,
     TextField,
     Button,
-    IconButton,
     Divider,
     Grid,
 } from '@material-ui/core';
 import { Edit, Save, Cancel, Lock } from '@material-ui/icons';
 import './Profile.css'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../../redux/userSlice'
+import axios from 'axios';
+import {toast} from 'react-toastify'
 
-const PROFILEDATA = {
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'johndoe@example.com',
-}
+
+// const PROFILEDATA = {
+//     firstName: 'John',
+//     lastName: 'Doe',
+//     email: 'johndoe@example.com',
+// }
 
 function Profile() {
+
+    const user = useSelector(selectUser)
+
     const [editMode, setEditMode] = useState(false);
     const [showChangePassword, setShowChangePassword] = useState(false);
 
-    const [firstName, setFirstName] = useState(PROFILEDATA.firstName);
-    const [lastName, setLastName] = useState(PROFILEDATA.lastName);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
 
-    const [passwordData, setPasswordData] = useState({
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: '',
-    });
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    useEffect(() => {
+        if (user) {
+            setFirstName(user?.firstname || "");
+            setLastName(user?.lastname || "");
+        }
+    }, [])
 
     const toggleEditMode = () => {
         if (!editMode && showChangePassword) {
@@ -39,10 +50,51 @@ function Profile() {
     };
 
     const handleSave = () => {
-        // Save the updated profile data to the server
-        // Then exit edit mode
+        axios({
+            url: 'http://localhost:5000/v1/user/updateProfile',
+            method: "POST",
+            data: {
+                firstName: firstName,
+                lastName: lastName
+            },
+            headers: {
+                authorization: `Bearer ${user && user.accessToken}`,
+            }
+        })
+            .then((res) => {
+                console.log(res);
+                alert('Successfully updated profile');
+                toast.success("Successfully updated profile", {
+                    position: toast.POSITION.BOTTOM_LEFT
+                })
+            }).catch(e => {
+                toast.error("Error while updating profile", {
+                    position: toast.POSITION.BOTTOM_LEFT
+                })
+                console.log(e)   
+            })
         setEditMode(false);
     };
+
+    const handleUpdatePassword = () => {
+        axios({
+            url: 'http://localhost:5000/v1/user/changePassword',
+            method: "POST",
+            data: {
+                password: currentPassword,
+                newPassword: newPassword
+            },
+            headers: {
+                authorization: `Bearer ${user && user.accessToken}`,
+            }
+        }) .then((res) => {
+            toast.success('Successfully updated the password', {
+                position:toast.POSITION.BOTTOM_LEFT
+            })
+            console.log('Successfully updated the password');
+        }).catch(e => console.log(e))
+        setShowChangePassword(true);
+    }
 
     const handleChangePassword = () => {
         if (editMode) {
@@ -53,11 +105,9 @@ function Profile() {
 
     const handleCancelPasswordChange = () => {
         setShowChangePassword(false);
-        setPasswordData({
-            currentPassword: '',
-            newPassword: '',
-            confirmPassword: '',
-        });
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
     };
 
     return (
@@ -96,7 +146,7 @@ function Profile() {
                     className='inputClass'
                     fullWidth
                     margin="normal"
-                    value={PROFILEDATA.email}
+                    value={user && user.email}
                     InputProps={{
                         readOnly: true,
                     }}
@@ -157,9 +207,8 @@ function Profile() {
                             type="password"
                             fullWidth
                             margin="normal"
-                            value={passwordData.currentPassword}
-                            onChange={(e) =>
-                                setPasswordData({ ...passwordData, currentPassword: e.target.value })
+                            value={currentPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)
                             }
                         />
 
@@ -169,9 +218,8 @@ function Profile() {
                             type="password"
                             fullWidth
                             margin="normal"
-                            value={passwordData.newPassword}
-                            onChange={(e) =>
-                                setPasswordData({ ...passwordData, newPassword: e.target.value })
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)
                             }
                         />
 
@@ -181,9 +229,8 @@ function Profile() {
                             type="password"
                             fullWidth
                             margin="normal"
-                            value={passwordData.confirmPassword}
-                            onChange={(e) =>
-                                setPasswordData({ ...passwordData, confirmPassword: e.target.value })
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)
                             }
                         />
                         <div className="passwordActionBtsGrp">
@@ -195,7 +242,7 @@ function Profile() {
                             >
                                 Cancel
                             </Button>
-                            <Button variant="contained" color="primary" startIcon={<Save />}>
+                            <Button onClick={handleUpdatePassword} variant="contained" color="primary" startIcon={<Save />}>
                                 Save Password
                             </Button>
                         </div>
