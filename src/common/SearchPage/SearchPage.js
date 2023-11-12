@@ -1,51 +1,90 @@
-import React, {useState} from 'react';
-import { Box, Paper, InputBase, IconButton } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
-import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-    },
-    searchContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      borderRadius: '40px',
-      boxShadow: '0px 2px 5px 0px rgba(0,0,0,0.2)',
-    },
-    input: {
-      flex: 1,
-      padding: '10px',
-      fontSize: '24px'
-    },
-    searchButton: {
-      padding: '10px',
-    },
-  }));
-  
-  function SearchPage() {
-    const classes = useStyles();
-    const [data, setData] = useState(null);
 
-  
+import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import './SearchPage.css';
+
+import Loader from '../loader/Loader';
+
+
+const mockData = Array.from({ length: 10 }, (_, index) => ({
+  id: index + 1,
+  title: `Sample Title ${index + 1}`,
+  subtitle: `Subtitle ${index + 1}`,
+  timestamp: '2023-01-01',
+  author: `Author ${index + 1}`,
+}));
+
+const SearchPage = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSearch = () => {
+    setIsLoading(true);
+    // Simulate API call or search logic
+    setTimeout(() => {
+      const results = mockData.filter(item =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setSearchResults(results);
+      setIsLoading(false);
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (searchTerm) {
+      handleSearch();
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchTerm]);
+
+  const renderCards = () => {
+    if (isLoading) {
+      return <Loader/>; // Show loader when loading
+    }
+
+    if (searchResults.length === 0) {
+      return <div className="no-results"><h2>No Results Found</h2></div>;
+    }
+
     return (
-      <Box className={data == null ? classes.root : classes.rootTop}>
-        <Paper className={classes.searchContainer}>
-          <InputBase
-            className={classes.input}
-            placeholder="Search Here..."
-            inputProps={{ 'aria-label': 'search here....' }}
-          />
-          <IconButton className={classes.searchButton} onClick={() => setData("abc")} color="primary">
-            <SearchIcon />
-          </IconButton>
-        </Paper>
-      </Box>
+      <div className="card-grid">
+        {searchResults.map(item => (
+          <div key={item.id} className="card">
+            <h3>{item.title}</h3>
+            <p>{item.subtitle}</p>
+            <p>Timestamp: {item.timestamp}</p>
+            <p>Author: {item.author}</p>
+            <button className="download-button">Download Here</button>
+          </div>
+        ))}
+      </div>
     );
-  }
-  
-  export default SearchPage;
-  
+  };
+
+  return (
+    <div className="search-page">
+      <h2>Search Here</h2>
+      <div className="search-bar-container">
+        <div className="search-bar-inner">
+          <FontAwesomeIcon icon={faSearch} className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="search-input"
+          />
+        </div>
+      </div>
+      {renderCards()}
+    </div>
+  );
+};
+
+export default SearchPage;
+
+
