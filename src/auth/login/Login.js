@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 
 import { useDispatch } from 'react-redux';
-import { setUser, selectUser, setQr } from '../../redux/userSlice';
+import { selectUser,setTempUser, setQr } from '../../redux/userSlice';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify'
 import { Backdrop, CircularProgress } from '@material-ui/core';
@@ -101,7 +101,7 @@ function Login() {
             setLoading(false)
             return;
           }
-          dispatch(setUser(response.data.user))
+          dispatch(setTempUser(response.data.user))
           dispatch(setQr({
             QrCode: response.data.QrCode,
             code: response.data.code
