@@ -65,41 +65,49 @@ function SignUp() {
 
     if (firstName === '') {
       setFirstNameError('First Name is required');
+      setLoading(false)
       return;
     }
 
     if (lastName === '') {
       setLastNameError('Last Name is required');
+      setLoading(false)
       return;
     }
 
     if (email === '') {
       setEmailError('Email is required');
+      setLoading(false)
       return;
     }
 
     if (!validateEmail(email)) {
       setEmailError('Invalid email format');
+      setLoading(false)
       return;
     }
 
     if (password === '') {
       setPasswordError('Password is required');
+      setLoading(false)
       return;
     }
 
     if (password.length < 6) {
       setPasswordError('Password must be at least 6 characters');
+      setLoading(false)
       return;
     }
 
     if (rePassword === '') {
       setRePasswordError('Re-enter Password is required');
+      setLoading(false)
       return;
     }
 
     if (rePassword !== password) {
       setRePasswordError('Passwords do not match');
+      setLoading(false)
       return;
     }
 
@@ -149,85 +157,89 @@ function SignUp() {
   };
 
   return (
-    <div className="signup-container">
+    <>
       {
-        loading && <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        loading ? <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }
+          }
           open={loading}
         >
           <CircularProgress color="inherit" />
-        </Backdrop>
+        </Backdrop >
+          :
+          <div className="signup-container">
+            <div className="signup-form">
+              <h2>Sign Up</h2>
+              <div className="input-group">
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  value={firstName}
+                  onChange={handleFirstNameChange}
+                />
+              </div>
+              {firstNameError && <p className="error-message">{firstNameError}</p>}
+              <div className="input-group">
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  value={lastName}
+                  onChange={handleLastNameChange}
+                />
+              </div>
+              {lastNameError && <p className="error-message">{lastNameError}</p>}
+              <div className="input-group">
+                <input
+                  type="text"
+                  placeholder="Email"
+                  value={email}
+                  onChange={handleEmailChange}
+                />
+              </div>
+              {emailError && <p className="error-message">{emailError}</p>}
+              <div className="input-group">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                />
+                <span className="password-toggle" onClick={toggleShowPassword}>
+                  {showPassword ? (
+                    <FontAwesomeIcon icon={faEye} />
+                  ) : (
+                    <FontAwesomeIcon icon={faEyeSlash} />
+                  )}
+                </span>
+              </div>
+              {passwordError && <p className="error-message">{passwordError}</p>}
+              <div className="input-group">
+                <input
+                  type={showRePassword ? 'text' : 'password'}
+                  placeholder="Re-enter Password"
+                  value={rePassword}
+                  onChange={handleRePasswordChange}
+                />
+                <span className="password-toggle" onClick={toggleShowRePassword}>
+                  {showRePassword ? (
+                    <FontAwesomeIcon icon={faEye} />
+                  ) : (
+                    <FontAwesomeIcon icon={faEyeSlash} />
+                  )}
+                </span>
+              </div>
+              {rePasswordError && <p className="error-message">{rePasswordError}</p>}
+              <button className="signup-button" onClick={handleSignUp}>
+                Sign Up
+              </button>
+              <pre>Already have an account?</pre>
+              <Link to="/">
+                <a>Login</a>
+              </Link>
+            </div>
+          </div>
       }
-      <div className="signup-form">
-        <h2>Sign Up</h2>
-        <div className="input-group">
-          <input
-            type="text"
-            placeholder="First Name"
-            value={firstName}
-            onChange={handleFirstNameChange}
-          />
-        </div>
-        {firstNameError && <p className="error-message">{firstNameError}</p>}
-        <div className="input-group">
-          <input
-            type="text"
-            placeholder="Last Name"
-            value={lastName}
-            onChange={handleLastNameChange}
-          />
-        </div>
-        {lastNameError && <p className="error-message">{lastNameError}</p>}
-        <div className="input-group">
-          <input
-            type="text"
-            placeholder="Email"
-            value={email}
-            onChange={handleEmailChange}
-          />
-        </div>
-        {emailError && <p className="error-message">{emailError}</p>}
-        <div className="input-group">
-          <input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-          <span className="password-toggle" onClick={toggleShowPassword}>
-            {showPassword ? (
-              <FontAwesomeIcon icon={faEye} />
-            ) : (
-              <FontAwesomeIcon icon={faEyeSlash} />
-            )}
-          </span>
-        </div>
-        {passwordError && <p className="error-message">{passwordError}</p>}
-        <div className="input-group">
-          <input
-            type={showRePassword ? 'text' : 'password'}
-            placeholder="Re-enter Password"
-            value={rePassword}
-            onChange={handleRePasswordChange}
-          />
-          <span className="password-toggle" onClick={toggleShowRePassword}>
-            {showRePassword ? (
-              <FontAwesomeIcon icon={faEye} />
-            ) : (
-              <FontAwesomeIcon icon={faEyeSlash} />
-            )}
-          </span>
-        </div>
-        {rePasswordError && <p className="error-message">{rePasswordError}</p>}
-        <button className="signup-button" onClick={handleSignUp}>
-          Sign Up
-        </button>
-        <pre>Already have an account?</pre>
-        <Link to="/">
-          <a>Login</a>
-        </Link>
-      </div>
-    </div>
+    </>
   );
 }
 

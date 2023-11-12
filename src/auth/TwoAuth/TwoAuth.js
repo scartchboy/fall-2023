@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import {
     Container,
     Paper,
-    Typography,
     TextField,
     Button,
-    IconButton,
     Divider,
-    Grid,
+    Backdrop,
+    CircularProgress
 } from '@material-ui/core';
 import { Check } from '@material-ui/icons';
 import './TwoAuth.css'
@@ -21,6 +20,8 @@ import { toast } from 'react-toastify';
 function TwoAuth() {
 
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
+
+    const [loading, setLoading] = useState(false)
 
     const user = useSelector(selectUser);
     const qrCode = useSelector(getQr);
@@ -63,8 +64,9 @@ function TwoAuth() {
     };
 
     const handleSubmit = () => {
+        setLoading(true)
         const enteredOtp = otp.join('');
-        console.log('Entered OTP:', enteredOtp);
+        console.log('Entered OTP:');
         axios({
             url: 'http://localhost:5000/v1/auth/user/verifyOtp',
             method: 'POST',
@@ -79,10 +81,12 @@ function TwoAuth() {
                 toast.success('Logged In successfully', {
                     position: toast.POSITION.BOTTOM_LEFT
                 })
+                setLoading(false)
             } else {
                 toast.error("Invalid OTP", {
                     position: toast.POSITION.BOTTOM_LEFT
                 })
+                setLoading(false)
                 dispatch(logout())
                 dispatch(clearQr())
             }
@@ -90,6 +94,7 @@ function TwoAuth() {
             toast.error("Error occured while two factor Auth", {
                 position: toast.POSITION.BOTTOM_LEFT
             })
+            setLoading(false)
             console.log(e);
             dispatch(logout())
             dispatch(clearQr())
@@ -98,38 +103,48 @@ function TwoAuth() {
     };
 
     return (
-        <Container maxWidth="sm">
-            <h2>Welcome {user && user.firstname} {user && user.lastname}</h2>
-            <Paper elevation={3} style={{ backgroundColor: "#00000090", padding: '20px', marginTop: '20px' }}>
-                <pre>Scan QRCode using google authenticator</pre>
-                <div className='QrDiv' dangerouslySetInnerHTML={{ __html: qrCode }} />
-                <Divider style={{ margin: '20px 0' }} />
-                <pre>(&then)Enter the One Time Password</pre>
-                <div style={{ padding: "20px" }}>
-                    {otp.map((digit, index) => (
-                        <TextField
-                            key={index}
-                            className={'otpTextField'}
-                            variant="outlined"
-                            size="small"
-                            type="text"
-                            value={digit}
-                            inputProps={{ maxLength: 1 }}
-                            onChange={(e) => handleOtpChange(index, e.target.value)}
-                            id={`otp-input-${index}`}
-                        />
-                    ))}
-                </div>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleSubmit()}
-                    startIcon={<Check />}
-                >
-                    Confirm
-                </Button>
-            </Paper>
-        </Container>
+        <>
+            {loading ? <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={loading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+                :
+                <Container maxWidth="sm">
+                    <h2>Welcome {user && user.firstname} {user && user.lastname}</h2>
+                    <Paper elevation={3} style={{ backgroundColor: "#00000090", padding: '20px', marginTop: '20px' }}>
+                        <pre>Scan QRCode using google authenticator</pre>
+                        <div className='QrDiv' dangerouslySetInnerHTML={{ __html: qrCode }} />
+                        <Divider style={{ margin: '20px 0' }} />
+                        <pre>(&then)Enter the One Time Password</pre>
+                        <div style={{ padding: "20px" }}>
+                            {otp.map((digit, index) => (
+                                <TextField
+                                    key={index}
+                                    className={'otpTextField'}
+                                    variant="outlined"
+                                    size="small"
+                                    type="text"
+                                    value={digit}
+                                    inputProps={{ maxLength: 1 }}
+                                    onChange={(e) => handleOtpChange(index, e.target.value)}
+                                    id={`otp-input-${index}`}
+                                />
+                            ))}
+                        </div>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleSubmit()}
+                            startIcon={<Check />}
+                        >
+                            Confirm
+                        </Button>
+                    </Paper>
+                </Container>
+            }
+        </>
     )
 }
 
