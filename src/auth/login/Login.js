@@ -84,15 +84,21 @@ function Login() {
       .then((response) => {
         if (response.status == 200) {
           console.log(response);
-          if(!response.data.user.isVerfied){
+          if (!response.data.user.isVerified) {
             toast.error("Admin hasn't verified your account yet", {
-              position : toast.POSITION.BOTTOM_LEFT
+              position: toast.POSITION.BOTTOM_LEFT
             })
+            return;
+          } else if (!response.data.user.isEmailVerified) {
+            toast.error("Email hasn't verified please check past emails", {
+              position: toast.POSITION.BOTTOM_LEFT
+            })
+            return;
           }
           dispatch(setUser(response.data.user))
           dispatch(setQr({
-            QrCode : response.data.QrCode,
-            code : response.data.code
+            QrCode: response.data.QrCode,
+            code: response.data.code
           }))
           navigate('/two-auth')
           console.log("Successfully Login");
