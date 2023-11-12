@@ -81,7 +81,7 @@ function Profile() {
             url: 'http://localhost:5000/v1/user/changePassword',
             method: "POST",
             data: {
-                password: currentPassword,
+                oldPassword: currentPassword,
                 newPassword: newPassword
             },
             headers: {
@@ -92,7 +92,12 @@ function Profile() {
                 position:toast.POSITION.BOTTOM_LEFT
             })
             console.log('Successfully updated the password');
-        }).catch(e => console.log(e))
+        }).catch(e => {
+            toast.error("Error occured while updating the password",{
+                position:toast.POSITION.BOTTOM_LEFT
+            })
+            console.log(e)
+        })
         setShowChangePassword(true);
     }
 

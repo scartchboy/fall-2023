@@ -12,6 +12,7 @@ import CheckEmail from './auth/CheckEmail';
 import CustomAppBar from './components/CustomAppBar/CustomAppBar';
 import Protected from './auth/ProtectedRoute';
 import ResetPassword from './auth/resetPassword/resetPassword';
+import Page404 from './common/Page404';
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
             <Route path="/search-page" element={<SearchPage />} />
             <Route path="/two-auth" element={<TwoAuth />} />
             <Route path="/check-email" element={<CheckEmail />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="*" element={<Page404 />} />
           </Route>
         </Routes>
       </BrowserRouter>

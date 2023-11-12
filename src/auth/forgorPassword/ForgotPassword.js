@@ -2,12 +2,9 @@ import React, { useState } from 'react';
 import {
     Container,
     Paper,
-    Typography,
     TextField,
     Button,
-    IconButton,
     Divider,
-    Grid,
 } from '@material-ui/core';
 import { SendOutlined } from '@material-ui/icons';
 import './ForgotPassword.css'
@@ -20,9 +17,8 @@ function ForgotPassword() {
     const [email, setEmail] = useState("");
 
     const handleSubmit = () => {
-        console.log(email);
         axios({
-            url: 'http://localhost:5000/v1/auth/user/resetPassword',
+            url: 'http://localhost:5000/v1/auth/user/resetPasswordLink',
             method: 'POST',
             data: {
                 email : email
@@ -32,10 +28,11 @@ function ForgotPassword() {
                 toast.warn("Please check the mail for reset link", {
                     position:toast.POSITION.BOTTOM_LEFT
                 })
+            }else{
+                toast.error("Error occured!! Please try again", {
+                    position:toast.POSITION.BOTTOM_LEFT
+                })
             }
-            toast.error("Error occured!! Please try again", {
-                position:toast.POSITION.BOTTOM_LEFT
-            })
         }).catch(e => {
             toast.error("Error occured!! Please try again", {
                 position:toast.POSITION.BOTTOM_LEFT
