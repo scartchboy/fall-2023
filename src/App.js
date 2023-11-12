@@ -11,6 +11,7 @@ import TwoAuth from './auth/TwoAuth/TwoAuth';
 import CheckEmail from './auth/CheckEmail';
 import CustomAppBar from './components/CustomAppBar/CustomAppBar';
 import Protected from './auth/ProtectedRoute';
+import ResetPassword from './auth/resetPassword/resetPassword';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/search-page" element={<SearchPage />} />
             <Route path="/two-auth" element={<TwoAuth />} />
             <Route path="/check-email" element={<CheckEmail />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
           </Route>
         </Routes>
       </BrowserRouter>

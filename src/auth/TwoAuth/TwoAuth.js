@@ -14,7 +14,6 @@ import './TwoAuth.css'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { clearQr, getCode, getQr, logout, selectUser } from '../../redux/userSlice';
-import QRCode from "react-qr-code";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -67,26 +66,29 @@ function TwoAuth() {
         const enteredOtp = otp.join('');
         console.log('Entered OTP:', enteredOtp);
         axios({
-            url:'http://localhost:5000/v1/auth/user/verifyOtp',
-            method:'POST',
-            data : {
+            url: 'http://localhost:5000/v1/auth/user/verifyOtp',
+            method: 'POST',
+            data: {
                 otp: enteredOtp,
-                code:q_code
+                code: q_code
             }
         }).then(res => {
-            if(res.status == 200){
+            if (res.status == 200) {
                 dispatch(clearQr())
-                navigate('/admin-auth')
-            }else{
-                toast.error("Error occured while two factor Auth", {
-                    position:toast.POSITION.BOTTOM_LEFT
+                navigate('/admin-view')
+                toast.success('Logged In successfully', {
+                    position: toast.POSITION.BOTTOM_LEFT
+                })
+            } else {
+                toast.error("Invalid OTP", {
+                    position: toast.POSITION.BOTTOM_LEFT
                 })
                 dispatch(logout())
                 dispatch(clearQr())
             }
         }).catch(e => {
             toast.error("Error occured while two factor Auth", {
-                position:toast.POSITION.BOTTOM_LEFT
+                position: toast.POSITION.BOTTOM_LEFT
             })
             console.log(e);
             dispatch(logout())
@@ -100,7 +102,7 @@ function TwoAuth() {
             <h2>Welcome {user && user.firstname} {user && user.lastname}</h2>
             <Paper elevation={3} style={{ backgroundColor: "#00000090", padding: '20px', marginTop: '20px' }}>
                 <pre>Scan QRCode using google authenticator</pre>
-                <div className='QrDiv' dangerouslySetInnerHTML={{ __html: qrCode }}/>
+                <div className='QrDiv' dangerouslySetInnerHTML={{ __html: qrCode }} />
                 <Divider style={{ margin: '20px 0' }} />
                 <pre>(&then)Enter the One Time Password</pre>
                 <div style={{ padding: "20px" }}>

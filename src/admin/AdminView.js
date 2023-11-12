@@ -125,7 +125,7 @@ function AdminView() {
         setUsers(updatedUsers);
         setSnackbarMessage(`User ${currentUser.firstname} has been declined.`);
         setOpenSnackbar(true);
-        toast.success(`User ${currentUser.firstname} has been declined.`, {
+        toast.warn(`User ${currentUser.firstname} has been declined.`, {
           position: toast.POSITION.BOTTOM_LEFT
         })
       })

@@ -29,8 +29,8 @@ const userSlice = createSlice({
 
 export const { setUser, logout, setQr, clearQr } = userSlice.actions;
 
-export const selectUser = (state) => state.user.user;
-export const getQr = (state) => state.user.QrCode;
-export const getCode = (state) => state.user.q_code;
+export const selectUser = (state) => state.user;
+export const getQr = (state) => state.QrCode;
+export const getCode = (state) => state.q_code;
 
 export default userSlice.reducer;

@@ -96,9 +96,6 @@ function Login() {
           }))
           navigate('/two-auth')
           console.log("Successfully Login");
-          toast.success('Logged In successfully', {
-            position: toast.POSITION.BOTTOM_LEFT
-          })
         } else {
           console.log("Error occured while loggin in", response.data.message);
           toast.error("Error occured while loggin in", {
