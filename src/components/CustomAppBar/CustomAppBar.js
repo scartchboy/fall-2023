@@ -38,9 +38,9 @@ const CustomAppBar = () => {
         <>
             <AppBar position="static" style={{ backgroundColor: '#000000E0', width: '100%' }}>
                 <Toolbar>
-                    <Typography variant="h6" style={{ flexGrow: 1 }}>
+                    <Typography variant="h6" style={{ flexGrow: 1, textAlign:'start'}}>
                         <Link to="/">
-                            <a>Fall 2023</a>
+                            <a>Fall 2023</a> {user && `|`} {user && user.firstname} {user && user.lastname} {user && user.isAdmin && '| Admin'}
                         </Link>
                     </Typography>
                     {
