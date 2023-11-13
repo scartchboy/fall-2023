@@ -33,14 +33,13 @@ const CustomAppBar = () => {
         handleClose();
         dispatch(logout())
     };
-
     return (
         <>
             <AppBar position="static" style={{ backgroundColor: '#000000E0', width: '100%' }}>
                 <Toolbar>
                     <Typography variant="h6" style={{ flexGrow: 1, textAlign:'start'}}>
                         <Link to="/">
-                            <a>Fall 2023</a> {user && `|`} {user && user.firstname} {user && user.lastname} {user && user.isAdmin && '| Admin'}
+                            <a>Fall 2023</a> {user && `|`} {user && user.firstname} {user && user.lastname} {(user && user.isAdmin!==0) && '| Admin'}
                         </Link>
                     </Typography>
                     {
