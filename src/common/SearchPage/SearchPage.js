@@ -6,6 +6,9 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import './SearchPage.css';
 
 import Loader from '../loader/Loader';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
 
 
 const mockData = Array.from({ length: 10 }, (_, index) => ({
@@ -24,26 +27,34 @@ const SearchPage = () => {
   const handleSearch = () => {
     setIsLoading(true);
     // Simulate API call or search logic
-    setTimeout(() => {
-      const results = mockData.filter(item =>
-        item.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setSearchResults(results);
-      setIsLoading(false);
-    }, 1000);
+    axios({
+      url: `https://ce98-128-82-60-252.ngrok-free.app/api/v1/elastic/searchDocs?query=${searchTerm}&from=0&size=10`,
+      method: "GET",
+    }).then(res => {
+      console.log(res);
+      if (res.status == 200) {
+        setSearchResults(res.hits.hits)
+      }
+    }).catch(e => {
+      toast.error(`following error occured ${e}`, {
+        position: toast.POSITION.BOTTOM_LEFT
+      })
+    })
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    if (searchTerm) {
-      handleSearch();
-    } else {
-      setSearchResults([]);
+  }, [searchResults]);
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch()
     }
-  }, [searchTerm]);
+  }
 
   const renderCards = () => {
     if (isLoading) {
-      return <Loader/>; // Show loader when loading
+      return <Loader />; // Show loader when loading
     }
 
     if (searchResults.length === 0) {
@@ -53,12 +64,11 @@ const SearchPage = () => {
     return (
       <div className="card-grid">
         {searchResults.map(item => (
-          <div key={item.id} className="card">
-            <h3>{item.title}</h3>
-            <p>{item.subtitle}</p>
-            <p>Timestamp: {item.timestamp}</p>
-            <p>Author: {item.author}</p>
-            <button className="download-button">Download Here</button>
+          <div key={item._id} className="card">
+            <h3>{item.highlight.abstract[0]}</h3>
+            <p>{item._source.program}</p>
+            <p>Author: {item._source.author}</p>
+            <button className="download-button">More..</button>
           </div>
         ))}
       </div>
@@ -77,6 +87,7 @@ const SearchPage = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input"
+            onKeyPress={handleKeyPress}
           />
         </div>
       </div>
