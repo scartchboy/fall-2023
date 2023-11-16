@@ -14,6 +14,7 @@ import Protected from './auth/ProtectedRoute';
 import ResetPassword from './auth/resetPassword/resetPassword';
 import Page404 from './common/Page404';
 import PdfViewer from './common/PDFViewer/PDFViewer';
+// import PdfViewer from './common/PDFViewer/PDFViewer';
 
 function App() {
   return (

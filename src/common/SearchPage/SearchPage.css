@@ -51,8 +51,13 @@ body {
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
   }
+
+  em {
+    background-color: yellow;
+  }
   
   .card {
+    font-size: 0.8rem;
     background-color: #fff;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
