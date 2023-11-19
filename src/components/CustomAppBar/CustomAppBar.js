@@ -1,11 +1,11 @@
 // CustomAppBar.js
 
 import React from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem, Divider } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser, logout } from '../../redux/userSlice';
-import { Outlet, Link,useNavigate } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
 
 const CustomAppBar = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -37,26 +37,36 @@ const CustomAppBar = () => {
         <>
             <AppBar position="static" style={{ backgroundColor: '#000000E0', width: '100%' }}>
                 <Toolbar>
-                    <Typography variant="h6" style={{ flexGrow: 1, textAlign:'start'}}>
+                    <Typography variant="h6" style={{ flexGrow: 1, textAlign: 'start' }}>
                         <Link to="/">
-                            <a>Fall 2023</a> {user && `|`} {user && user.firstname} {user && user.lastname} {(user && user.isAdmin!==0) && '| Admin'}
+                            <a>Fall 2023</a> {user && `|`} {user && user.firstname} {user && user.lastname} {(user && user.isAdmin !== 0) && '| Admin'}
                         </Link>
                     </Typography>
                     {
-                        user &&
-                        <>
-                            <IconButton color="inherit" onClick={handleClick}>
-                                <MenuIcon />
-                            </IconButton>
-                            <Menu
-                                anchorEl={anchorEl}
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-                                <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
-                            </Menu>
-                        </>
+                        user ?
+                            <>
+                                <IconButton color="inherit" onClick={handleClick}>
+                                    <MenuIcon />
+                                </IconButton>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleClose}
+                                >
+                                    <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
+                                    <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
+                                </Menu>
+                            </>
+                            :
+                            <div style={{display:'flex', alignItems:'center'}}>
+                                <Link to="/login">
+                                    <a>Login</a>
+                                </Link>
+                                <Divider orientation="vertical" variant="middle" flexItem/>
+                                <Link to="/signup">
+                                    <a>Sign Up</a>
+                                </Link>
+                            </div>
                     }
                 </Toolbar>
             </AppBar>

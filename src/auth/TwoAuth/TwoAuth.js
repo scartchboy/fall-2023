@@ -103,6 +103,7 @@ function TwoAuth() {
           setLoading(false)
           dispatch(logout())
           dispatch(clearQr())
+          navigate('/login')
         }
       })
       .catch((e) => {
@@ -113,6 +114,7 @@ function TwoAuth() {
         console.log(e)
         dispatch(logout())
         dispatch(clearQr())
+        navigate('/login')
       })
     setOtp(['', '', '', '', '', ''])
   }

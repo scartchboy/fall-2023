@@ -22,12 +22,12 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<CustomAppBar />} >
-            <Route index element={<Login />} />
+            <Route index element={<SearchPage />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/admin-view" element={<Protected><AdminView /></Protected>} />
             <Route path="/profile-page" element={<Protected><Profile /> </Protected>} />
-            <Route path="/search-page" element={<SearchPage />} />
             <Route path="/two-auth" element={<TwoAuth />} />
             <Route path="/check-email" element={<CheckEmail />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />

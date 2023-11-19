@@ -88,7 +88,14 @@ function Login() {
       .then((response) => {
         if (response.status == 200) {
           console.log(response);
-          if (!response.data.user.isVerified) {
+          if(!response.data.user){
+            toast.error(response.data.message, {
+              position: toast.POSITION.BOTTOM_LEFT
+            })
+            setLoading(false)
+            return;
+          }
+          else if (!response.data.user.isVerified) {
             toast.error("Admin hasn't verified your account yet", {
               position: toast.POSITION.BOTTOM_LEFT
             })
@@ -111,13 +118,14 @@ function Login() {
           console.log("Successfully Login");
         } else {
           console.log("Error occured while loggin in", response.data.message);
-          toast.error("Error occured while loggin in", {
+          toast.error(response.data.message, {
             position: toast.POSITION.BOTTOM_LEFT
           })
           setLoading(false)
         }
       }).catch(e => {
-        toast.error("Error occured while loggin in", {
+        console.log(e);
+        toast.error(e.message, {
           position: toast.POSITION.BOTTOM_LEFT
         })
         setLoading(false)

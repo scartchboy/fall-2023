@@ -81,7 +81,7 @@ function ForgotPassword() {
                             Send Mail
                         </Button>
                         <pre>Get back to login? </pre>
-                        <Link to="/">
+                        <Link to="/login">
                             <a>back</a>
                         </Link>
                     </Paper>

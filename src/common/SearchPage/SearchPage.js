@@ -52,7 +52,7 @@ const SearchPage = () => {
   };
 
   useEffect(() => {
-    (async() => {
+    (async () => {
       await handleSearch()
     })()
   }, [page, rowsPerPage]);
@@ -90,11 +90,11 @@ const SearchPage = () => {
 
     return (
       <div className="card-grid">
-        {searchResults.map(item => (
-          <div key={item._id} className="card">
-            <p dangerouslySetInnerHTML={{__html: item.highlight.abstract[0]}}></p>
-            <p>{item._source.program}</p>
-            <p>Author: {item._source.author}</p>
+        {searchResults?.map(item => (
+          <div key={item?._id} className="card">
+            <h4>{item?._source.program}</h4>
+            <p dangerouslySetInnerHTML={{ __html: item?.highlight?.text[0] }}></p>
+            <p>Author: {item?._source.author}</p>
             <button className="download-button" onClick={() => handleCardClick(item)}>More..</button>
           </div>
         ))}
@@ -117,28 +117,32 @@ const SearchPage = () => {
             onKeyPress={handleKeyPress}
           />
         </div>
-          {
-            totalRecords ? (
-              <p>Showing 10 / {totalRecords}</p>
-            ) : ""
-          }
-          {
-            totalRecords < 10 ? (
-              <p>Showing {totalRecords} / {totalRecords}</p>
-            ) : ""
-          }
+        {
+          totalRecords ? (
+            <h4>Showing 10 / {totalRecords}</h4>
+          ) : ""
+        }
+        {
+          totalRecords < 10 ? (
+            <h4>Showing {totalRecords} / {totalRecords}</h4>
+          ) : ""
+        }
       </div>
       {renderCards()}
-      <div className='home__paginator'>
-            <TablePagination
-              component="div"
-              count={totalRecords}
-              page={page}
-              onPageChange={handleChangePage}
-              rowsPerPage={rowsPerPage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </div>
+      {
+        searchResults.length > 0 &&
+        <div className='home__paginator'>
+          <TablePagination
+            style={{ color: '#fff' }}
+            component="div"
+            count={totalRecords}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </div>
+      }
     </div>
   );
 };

@@ -4,18 +4,16 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-  background-color: antiquewhite;
+    background-color: transparent;
+    text-align: start;
   }
   
   .metadata-container {
     flex: 1;
-    padding: 16px;
+    padding: 100px;
     border-bottom: 1px solid #ccc;
-    /* color: white !important; */
-  }
-
-  a {
-    /* color: black !important; */
+    color: white !important;
+    background-color: #00000050;
   }
   
   .pdf-preview-container {
@@ -26,6 +24,10 @@
     align-items: center;
     justify-content: center;
     padding: 8px;
+  }
+
+  a:hover{
+    color: #17a2b8;
   }
 
   

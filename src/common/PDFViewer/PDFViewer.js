@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ArrowDownwardOutlined} from '@material-ui/icons';
 import './PDFViewer.css'
 
 const DownloadPath = "http://localhost:5000/static/"
@@ -17,11 +18,11 @@ const PdfViewer = () => {
             <div className="metadata-container">
                 <h2>PDF Metadata</h2>
                 <div>
-                    <p>Author: {card?._source?.author}</p>
-                    <p>Program: {card?._source?.program}</p>
-                    <p>Degree: {card?._source?.degree}</p>
-                    <p>Abstract: {card?._source?.abstract}</p>
-                    <a href={DownloadPath + card?._source?.pdf} target="_blank">Download PDF</a>
+                    <p><u><b>Author:</b></u> {card?._source?.author}</p>
+                    <p><u><b>Program:</b></u> {card?._source?.program}</p>
+                    <p><u><b>Degree:</b></u> {card?._source?.degree}</p>
+                    <p><u><b>Abstract:</b></u> {card?._source?.text}</p>
+                    <div><a href={DownloadPath + card?._source?.pdf} target="_blank">Download PDF <ArrowDownwardOutlined/></a></div>
                 </div>
             </div>
 

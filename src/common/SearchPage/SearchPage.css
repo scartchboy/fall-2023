@@ -50,6 +50,7 @@ body {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
+    text-align: start;
   }
 
   em {
@@ -58,7 +59,8 @@ body {
   
   .card {
     font-size: 0.8rem;
-    background-color: #fff;
+    background-color: #00000090;
+    color: white;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -72,10 +74,10 @@ body {
   }
   
   .download-button {
-    background-color: #4caf50;
+    background-color:transparent;
     color: #fff;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 0;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
@@ -83,7 +85,7 @@ body {
   }
   
   .download-button:hover {
-    background-color: #45a049;
+    transform: scale(1.1);
   }
   
   .no-results {

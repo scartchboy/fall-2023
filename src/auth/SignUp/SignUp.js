@@ -233,7 +233,7 @@ function SignUp() {
                 Sign Up
               </button>
               <pre>Already have an account?</pre>
-              <Link to="/">
+              <Link to="/login">
                 <a>Login</a>
               </Link>
             </div>
