@@ -10,6 +10,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { TablePagination } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
+import Chatbot from '../../components/Chatbot/Chatbot';
 
 
 
@@ -104,6 +105,7 @@ const SearchPage = () => {
 
   return (
     <div className="search-page">
+      <Chatbot />
       <h2>Search Here</h2>
       <div className="search-bar-container">
         <div className="search-bar-inner">

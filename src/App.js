@@ -14,6 +14,7 @@ import Protected from './auth/ProtectedRoute';
 import ResetPassword from './auth/resetPassword/resetPassword';
 import Page404 from './common/Page404';
 import PdfViewer from './common/PDFViewer/PDFViewer';
+import ChatBot from './components/Chatbot/Chatbot';
 // import PdfViewer from './common/PDFViewer/PDFViewer';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
             <Route path="/check-email" element={<CheckEmail />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/pdf-viewer" element={<PdfViewer />} />
+            {/* <Route path="/dev" element={<ChatBot />} /> */}
             <Route path="*" element={<Page404 />} />
           </Route>
         </Routes>
