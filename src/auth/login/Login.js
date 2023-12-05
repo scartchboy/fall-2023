@@ -137,7 +137,7 @@ function Login() {
         })
         setLoading(false)
       })
-
+    setIsCaptchaSuccess(false)
     console.log('Email:', email);
     console.log('Password:', password);
   };
@@ -186,7 +186,7 @@ function Login() {
               </span>
             </div>
             {passwordError && <p className="error-message">{passwordError}</p>}
-            <div style={{display:'flex', justifyContent:'center'}}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
               <ReCAPTCHA
                 sitekey="6Lfl_iUpAAAAAJQRbaPBqzkARoQd5egMDGjEQ6uB"
                 onChange={onCaptchaChange}
