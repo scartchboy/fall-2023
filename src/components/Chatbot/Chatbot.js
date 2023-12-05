@@ -33,7 +33,7 @@ export const Chatbot = () => {
             title: cardItem?._source?.title
         }
         axios({
-            url: 'http://localhost:5000/v1/chat?isFeeding=true',
+            url: 'http://localhost:5000/v1/chat?loadText=true',
             method: 'POST',
             data: data,
             headers: {
@@ -92,7 +92,7 @@ export const Chatbot = () => {
         return () => {
             return () => {
                 axios({
-                    url: 'http://localhost:5000/v1/chat?flushMessages=true',
+                    url: 'http://localhost:5000/v1/chat?clearMessages=true',
                     method: 'POST',
                     data: {
                         message: "Thank you for the help"
@@ -101,8 +101,8 @@ export const Chatbot = () => {
                         // 'Authorization': `bearer ${token}`,
                         'Content-Type': 'application/json'
                     }
-                }).then(res => console.log("Flushed the messages"))
-                    .catch(e => console.log("error while flushing the messages"))
+                }).then(res => console.log("Cleared the messages"))
+                    .catch(e => console.log("error while clearing the messages"))
             }
         }
     }, [])
