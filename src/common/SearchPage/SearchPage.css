@@ -55,11 +55,12 @@ body {
 
   em {
     background-color: yellow;
+    color: #000000;
   }
   
   .card {
     font-size: 0.8rem;
-    background-color: #00000090;
+    background-color: #000000A0;
     color: white;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

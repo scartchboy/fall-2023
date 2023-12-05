@@ -90,3 +90,7 @@
   .signup-button:hover {
     background-color: #138496; /* Change the color on hover for the "Sign Up" button */
   }
+
+  .btn_disabled {
+    background-color: gray !important;
+  }

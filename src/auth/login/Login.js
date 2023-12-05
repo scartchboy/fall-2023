@@ -4,9 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
+import ReCAPTCHA from "react-google-recaptcha";
 
 import { useDispatch } from 'react-redux';
-import { selectUser,setTempUser, setQr } from '../../redux/userSlice';
+import { selectUser, setTempUser, setQr } from '../../redux/userSlice';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify'
 import { Backdrop, CircularProgress } from '@material-ui/core';
@@ -19,6 +20,7 @@ function Login() {
   const [passwordError, setPasswordError] = useState('');
 
   const [loading, setLoading] = useState(false);
+  const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false)
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -44,6 +46,11 @@ function Login() {
       navigate('/search-page')
     }
   }, [loading])
+
+  const onCaptchaChange = (value) => {
+    setIsCaptchaSuccess(true)
+    console.log("captcha value: ", value);
+  }
 
   const handleLogin = () => {
     setLoading(true);
@@ -88,7 +95,7 @@ function Login() {
       .then((response) => {
         if (response.status == 200) {
           console.log(response);
-          if(!response.data.user){
+          if (!response.data.user) {
             toast.error(response.data.message, {
               position: toast.POSITION.BOTTOM_LEFT
             })
@@ -179,7 +186,13 @@ function Login() {
               </span>
             </div>
             {passwordError && <p className="error-message">{passwordError}</p>}
-            <button className="signup-button" onClick={handleLogin}>
+            <div style={{display:'flex', justifyContent:'center'}}>
+              <ReCAPTCHA
+                sitekey="6Lfl_iUpAAAAAJQRbaPBqzkARoQd5egMDGjEQ6uB"
+                onChange={onCaptchaChange}
+              />
+            </div>
+            <button disabled={!isCaptchaSuccessful} className={`signup-button ${!isCaptchaSuccessful && `btn_disabled`}`} onClick={handleLogin}>
               Login
             </button>
             <pre>Don't have an account ? </pre>
